@@ -85,6 +85,9 @@ local plugins = {
     end
   },
   {
+    "nvim-neotest/nvim-nio"
+  },
+  {
     "jay-babu/mason-nvim-dap.nvim",
     event = "VeryLazy",
     dependencies = {
