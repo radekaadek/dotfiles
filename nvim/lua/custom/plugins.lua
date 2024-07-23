@@ -7,11 +7,33 @@ local plugins = {
     end,
   },
   {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- setting the keybinding for LazyGit with 'keys' is recommended in
+    -- order to load the plugin when the command is run for the first time
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+    }
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
         "rust-analyzer",
         "clangd",
+        "clang-format",
+        "java-debug-adapter",
+        "java-test",
         -- "r-languageserver",
         "pyright",
         "debugpy",
@@ -19,19 +41,28 @@ local plugins = {
         "typescript-language-server",
         "js-debug-adapter",
         "codelldb",
+        -- svelte
+        "svelte-language-server",
       },
     },
   },
+  -- {
+  --   "nvim-java/nvim-java"
+  -- },
+  -- {
+  --   "github/copilot.vim",
+  --   lazy = false,
+  --   config = function()  -- Mapping tab is already used by NvChad
+  --     vim.g.copilot_no_tab_map = true;
+  --     vim.g.copilot_assume_mapped = true;
+  --     vim.g.copilot_tab_fallback = "";
+  --   -- The mapping is set to other key, see custom/lua/mappings
+  --   -- or run <leader>ch to see copilot mapping section
+  --   end
+  -- },
   {
-    "github/copilot.vim",
-    lazy = false,
-    config = function()  -- Mapping tab is already used by NvChad
-      vim.g.copilot_no_tab_map = true;
-      vim.g.copilot_assume_mapped = true;
-      vim.g.copilot_tab_fallback = "";
-    -- The mapping is set to other key, see custom/lua/mappings
-    -- or run <leader>ch to see copilot mapping section
-    end
+    "mfussenegger/nvim-jdtls",
+    ft = 'java'
   },
   {
     "mrcjkb/rustaceanvim",
@@ -48,11 +79,39 @@ local plugins = {
   },
   {
     "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>ld",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>lX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>lL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>lQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
     },
   },
   {
@@ -111,6 +170,6 @@ local plugins = {
       local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
       require("dap-python").setup(path)
     end
-  }
+  },
 }
 return plugins

@@ -26,48 +26,6 @@ M.dap = {
   }
 }
 
--- trouble.nvim
-M.trouble = {
-  n = {
-    ["<leader>lt"] = {
-      function()
-        require("trouble").toggle()
-      end,
-      "Trouble Toggle"
-    },
-    ["<leader>lw"] = {
-      function()
-        require("trouble").toggle("workspace_diagnostics")
-      end,
-      "Trouble Workspace Diagnostics"
-    },
-    ["<leader>ld"] = {
-      function()
-        require("trouble").toggle("document_diagnostics")
-      end,
-      "Trouble Document Diagnostics"
-    },
-    ["<leader>lq"] = {
-      function()
-        require("trouble").toggle("quickfix")
-      end,
-      "Trouble Quickfix"
-    },
-    ["<leader>ll"] = {
-      function()
-        require("trouble").toggle("loclist")
-      end,
-      "Trouble Loclist"
-    },
-    ["gR"] = {
-      function()
-        require("trouble").toggle("lsp_references")
-      end,
-      "Trouble LSP References"
-    }
-  }
-}
-
 -- Lua
 
 M.general = {
