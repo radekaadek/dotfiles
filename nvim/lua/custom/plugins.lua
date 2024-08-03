@@ -18,6 +18,7 @@ local plugins = {
     -- optional for floating window border decoration
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
     },
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
@@ -42,6 +43,7 @@ local plugins = {
         "typescript-language-server",
         "js-debug-adapter",
         "codelldb",
+        "lua-language-server",
         -- svelte
         "svelte-language-server",
       },
