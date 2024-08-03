@@ -5,6 +5,105 @@ local plugins = {
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
+    opts = {
+      servers = {
+        dockerls = {},
+        docker_compose_language_service = {},
+        marksman = {},
+              -- Ensure mason installs the server
+        clangd = {
+          keys = {
+            { "<leader>csh", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
+          },
+          root_dir = function(fname)
+            return require("lspconfig.util").root_pattern(
+              "Makefile",
+              "configure.ac",
+              "configure.in",
+              "config.h.in",
+              "meson.build",
+              "meson_options.txt",
+              "build.ninja"
+            )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
+              fname
+            ) or require("lspconfig.util").find_git_ancestor(fname)
+          end,
+          capabilities = {
+            offsetEncoding = { "utf-16" },
+          },
+          cmd = {
+            "clangd",
+            "--background-index",
+            "--clang-tidy",
+            "--header-insertion=iwyu",
+            "--completion-style=detailed",
+            "--function-arg-placeholders",
+            "--fallback-style=llvm",
+          },
+          init_options = {
+            usePlaceholders = true,
+            completeUnimported = true,
+            clangdFileStatus = true,
+          },
+        },
+      },
+    },
+  },
+  {
+    "sqls-server/sqls.vim",
+  },
+  {
+    "tpope/vim-dadbod",
+    cmd = "DB",
+  },
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
+    dependencies = {
+      { 'tpope/vim-dadbod', lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+    },
+    keys = {
+      { "<leader>B", "<cmd>DBUIToggle<CR>", desc = "Toggle DBUI" },
+    },
+    init = function()
+      local data_path = vim.fn.stdpath("data")
+
+      vim.g.db_ui_auto_execute_table_helpers = 1
+      vim.g.db_ui_save_location = data_path .. "/dadbod_ui"
+      vim.g.db_ui_show_database_icon = true
+      vim.g.db_ui_tmp_query_location = data_path .. "/dadbod_ui/tmp"
+      vim.g.db_ui_use_nerd_fonts = true
+      vim.g.db_ui_use_nvim_notify = true
+
+      -- NOTE: The default behavior of auto-execution of queries on save is disabled
+      -- this is useful when you have a big query that you don't want to run every time
+      -- you save the file running those queries can crash neovim to run use the
+      -- default keymap: <leader>S
+      vim.g.db_ui_execute_on_save = false
+    end,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+  {
+    "MeanderingProgrammer/markdown.nvim",
+    opts = {
+      file_types = { "markdown", "norg", "rmd", "org" },
+      code = {
+        sign = false,
+        width = "block",
+        right_pad = 1,
+      },
+      heading = {
+        sign = false,
+        icons = {},
+      },
+    },
+    ft = { "markdown", "norg", "rmd", "org" },
   },
   {
     "kdheepak/lazygit.nvim",
@@ -35,17 +134,22 @@ local plugins = {
         "clang-format",
         "java-debug-adapter",
         "java-test",
-        "sqls",
+        "sqlfluff",
         -- "r-languageserver",
         "pyright",
         "debugpy",
-        "sqlls",
+        "sqls",
         "typescript-language-server",
         "js-debug-adapter",
         "codelldb",
         "lua-language-server",
         -- svelte
         "svelte-language-server",
+        "cmakelang",
+        "cmakelint",
+        "hadolint", -- Dockerfile linter
+        "markdownlint-cli2",
+        "markdown-toc",
       },
     },
   },
@@ -62,6 +166,9 @@ local plugins = {
     -- The mapping is set to other key, see custom/lua/mappings
     -- or run <leader>ch to see copilot mapping section
     end
+  },
+  {
+    "Civitasv/cmake-tools.nvim",
   },
   {
     "mfussenegger/nvim-jdtls",
@@ -116,9 +223,6 @@ local plugins = {
         desc = "Quickfix List (Trouble)",
       },
     },
-  },
-  {
-    "nanotee/sqls.nvim"
   },
   {
     "mfussenegger/nvim-dap",

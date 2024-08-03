@@ -148,6 +148,11 @@ local default_plugins = {
     config = function()
       require "plugins.configs.lspconfig"
     end,
+    opts = {
+      servers = {
+        neocmake = {},
+      },
+    },
   },
 
   -- load luasnips + cmp related in insert mode only
