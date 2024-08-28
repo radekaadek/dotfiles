@@ -9,10 +9,13 @@ ts_configs.setup {
   auto_install = true,
 }
 
-lspconfig.pyright.setup {
-  on_attach = on_attach,
+lspconfig.basedpyright.setup {
   capabilities = capabilities,
-  filetypes = {'python'},
+  settings = {
+    basedpyright = {
+      typeCheckingMode = "standard",
+    },
+  },
 }
 lspconfig.tsserver.setup {
   on_attach = on_attach,
@@ -43,3 +46,9 @@ lspconfig.r_language_server.setup {
 lspconfig.sqls.setup {
   on_attach = on_attach,
 }
+
+-- lspconfig.esbonio.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+-- }
+
