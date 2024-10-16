@@ -1,3 +1,9 @@
+-- Example for configuring Neovim to load user-installed installed Lua rocks:
+-- for image.nvim
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?.lua"
+
+
 local plugins = {
   {
     "neovim/nvim-lspconfig",
@@ -7,6 +13,7 @@ local plugins = {
     end,
     opts = {
       servers = {
+        neocmake = {},
         dockerls = {},
         docker_compose_language_service = {},
 marksman = {},
@@ -182,28 +189,6 @@ marksman = {},
     end,
   },
   {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
-  },
-  {
-    "MeanderingProgrammer/markdown.nvim",
-    opts = {
-      file_types = { "markdown", "norg", "rmd", "org" },
-      code = {
-        sign = false,
-        width = "block",
-        right_pad = 1,
-      },
-      heading = {
-        sign = false,
-        icons = {},
-      },
-    },
-    ft = { "markdown", "norg", "rmd", "org" },
-  },
-  {
     "kdheepak/lazygit.nvim",
     cmd = {
       "LazyGit",
@@ -227,7 +212,9 @@ marksman = {},
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        "markdown_inline", -- important
         "bash-language-server",
+        "dart-debug-adapter",
         "rust-analyzer",
         -- "esbonio",
         "clangd",
@@ -440,6 +427,80 @@ marksman = {},
       },
       })
     end
+  },
+  {
+    'akinsho/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = true,
+  },
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1001, -- this plugin needs to run before anything else
+    opts = {
+    rocks = { "magick" },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+    ft = "markdown"
+  },
+  {
+    'vhyrro/luarocks.nvim', -- for images
+    priority = 1001,
+    opts = {
+      rocks = { 'magick' },
+    },
+  },
+  {
+    "3rd/image.nvim",
+    config = function()
+      require("image").setup({
+        backend = "kitty",
+        integrations = {
+          markdown = {
+            enabled = true,
+            clear_in_insert_mode = false,
+            download_remote_images = true,
+            only_render_image_at_cursor = false,
+            filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+          },
+          neorg = {
+            enabled = true,
+            clear_in_insert_mode = false,
+            download_remote_images = true,
+            only_render_image_at_cursor = false,
+            filetypes = { "norg" },
+          },
+          html = {
+            enabled = false,
+          },
+          css = {
+            enabled = false,
+          },
+        },
+        max_width = nil,
+        max_height = nil,
+        max_width_window_percentage = nil,
+        max_height_window_percentage = 50,
+        window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+        editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+        tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
+      })
+    end,
+    lazy = false,
+    -- ft = { "markdown", "png", "jpeg", "jpg", "gif", "webp", "avif" }
   }
 }
 return plugins
