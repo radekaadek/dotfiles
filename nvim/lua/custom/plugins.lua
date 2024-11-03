@@ -7,6 +7,12 @@ package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/shar
 -- for avante.nvim
 vim.opt.laststatus = 3
 
+-- render tabs as 2 spaces
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.bo.softtabstop = 2
+
 local plugins = {
   {
     "neovim/nvim-lspconfig",
@@ -561,6 +567,15 @@ marksman = {},
         ft = { "markdown", "Avante" },
       },
     },
+  },
+  {
+    'akinsho/git-conflict.nvim',
+    event = "BufReadPre",
+    config = true
+  },
+  {
+    'lambdalisue/vim-suda',
+    lazy = false,
   }
 }
 return plugins
