@@ -63,5 +63,12 @@ require("lspconfig").lua_ls.setup {
     },
   },
 }
+vim.g.lazyvim_python_lsp = "basedpyright"
+
+require("lspconfig").basedpyright.setup{
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+
+}
 
 return M
