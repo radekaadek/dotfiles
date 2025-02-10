@@ -1,4 +1,20 @@
+-- require("nvim-tree").setup({
+--   filters = {
+--     git_ignored = false,
+--   },
+-- })
+
 return {
+  {
+    "nvim-tree/nvim-tree.lua",
+    config = function()
+      require("nvim-tree").setup({
+        filters = {
+          git_ignored = false,
+        },
+      })
+    end,
+  },
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
@@ -130,6 +146,10 @@ marksman = {},
       }
     end,
     dependencies = { {'nvim-tree/nvim-web-devicons'}}
+  },
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = 'java'
   },
   {
     "folke/flash.nvim",
@@ -363,37 +383,6 @@ marksman = {},
     }
   },
   {
-    'krisajenkins/telescope-docker.nvim',
-    event = 'VeryLazy',
-    dependencies = {
-        'nvim-telescope/telescope.nvim',
-    },
-    config = function()
-        require('telescope').load_extension('telescope_docker')
-        require('telescope_docker').setup {}
-    end,
-
-    -- Example keybindings. Adjust these to suit your preferences or remove
-    --   them entirely:
-    keys = {
-        {
-            '<Leader>dv',
-            ':Telescope telescope_docker docker_volumes<CR>',
-            desc = '[D]ocker [V]olumes',
-        },
-        {
-            '<Leader>di',
-            ':Telescope telescope_docker docker_images<CR>',
-            desc = '[D]ocker [I]mages',
-        },
-        {
-            '<Leader>dp',
-            ':Telescope telescope_docker docker_ps<CR>',
-            desc = '[D]ocker [P]rocesses',
-        },
-    },
-  },
-  {
     "nvim-treesitter/nvim-treesitter-context",
   },
   {
@@ -563,5 +552,41 @@ marksman = {},
   {
     'lambdalisue/vim-suda',
     lazy = false,
-  }
+  },
+  {
+    'cameron-wags/rainbow_csv.nvim',
+    config = true,
+    ft = {
+        'csv',
+        'tsv',
+        'csv_semicolon',
+        'csv_whitespace',
+        'csv_pipe',
+        'rfc_csv',
+        'rfc_semicolon'
+    },
+    cmd = {
+        'RainbowDelim',
+        'RainbowDelimSimple',
+        'RainbowDelimQuoted',
+        'RainbowMultiDelim'
+    }
+  },
+  {
+    "f-person/git-blame.nvim",
+    event = "VeryLazy", -- Load plugin lazily
+    opts = {
+      enabled = false, -- Disable inline blame by default
+      message_template = "<author> • <date> • <summary>", -- Customize the blame message
+      date_format = "%m-%d-%Y", -- Customize the date format
+      virtual_text_column = 1, -- Start blame text from the first column
+    },
+    keys = {
+      {
+        "<leader>gb",
+        ":GitBlameToggle<CR>", -- Toggle blame messages
+        desc = "Toggle Git Blame",
+      },
+    },
+  },
 }

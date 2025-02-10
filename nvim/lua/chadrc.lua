@@ -6,12 +6,19 @@
 local M = {}
 
 M.base46 = {
-	theme = "solarized_osaka",
+	theme = "tokyodark",
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
 	-- 	["@comment"] = { italic = true },
 	-- },
 }
+
+-- M.nvdash = { load_on_startup = true }
+-- M.ui = {
+--       tabufline = {
+--          lazyload = false
+--      }
+--}
 
 return M
