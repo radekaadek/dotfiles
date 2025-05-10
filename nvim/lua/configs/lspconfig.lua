@@ -1,11 +1,14 @@
--- load defaults i.e lua_lsp
 require("nvchad.configs.lspconfig").defaults()
 
+local servers = { "html", "cssls" , "basedpyright", "clangd", "ts_ls", "jsonls", "svelte",
+                  "yamlls", "rust_analyzer", "cmake", "sqls", "bashls", "dockerls", "jdtls",
+                  "kotlin_language_server"}
+vim.lsp.enable(servers)
+
+-- read :h vim.lsp.config for changing options of lsp servers 
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls" , "basedpyright", "clangd", "ts_ls", "jsonls", "svelte",
-                  "yamlls", "rust_analyzer", "cmake", "sqls", "bashls", "dockerls", "jdtls" }
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -31,7 +34,7 @@ lspconfig.basedpyright.setup {
   capabilities = nvlsp.capabilities,
   settings = {
     basedpyright = {
-      typeCheckingMode = "standard"
+      typeCheckingMode = "basic"
     }
   }
 }
