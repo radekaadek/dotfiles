@@ -2,7 +2,7 @@ require("nvchad.configs.lspconfig").defaults()
 
 local servers = { "html", "cssls" , "basedpyright", "clangd", "ts_ls", "jsonls", "svelte",
                   "yamlls", "rust_analyzer", "cmake", "sqls", "bashls", "dockerls", "jdtls",
-                  "kotlin_language_server"}
+                  "kotlin_language_server", "terraformls", "tailwindcss" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
@@ -34,7 +34,9 @@ lspconfig.basedpyright.setup {
   capabilities = nvlsp.capabilities,
   settings = {
     basedpyright = {
-      typeCheckingMode = "basic"
+      analysis = {
+        typeCheckingMode = "basic"
+      }
     }
   }
 }

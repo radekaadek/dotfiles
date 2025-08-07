@@ -32,8 +32,16 @@ return {
         neocmake = {},
         dockerls = {},
         docker_compose_language_service = {},
-marksman = {},
-              -- Ensure mason installs the server
+        marksman = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                typeCheckingMode = 'basic',
+              },
+            },
+          },
+        },
         clangd = {
           keys = {
             { "<leader>csh", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
@@ -98,26 +106,26 @@ marksman = {},
       },
     },
   },
-  {
-  "whleucka/reverb.nvim",
-  event = "BufReadPre",
-    opts = {
-      sounds = {
-        -- add custom sound paths for other events here
-        -- eg. EVENT = "/some/path/to/sound.mp3"
-        -- BufRead = { path = sound_dir .. "start.ogg", volume = 0-100 },
-        -- CursorMovedI = { path = sound_dir .. "click.ogg", volume = 0-100 },
-        -- InsertLeave = { path = sound_dir .. "toggle.ogg", volume = 0-100 },
-        -- ExitPre = { path = sound_dir .. "exit.ogg", volume = 0-100 },
-        -- BufWrite = { path = sound_dir .. "save.ogg", volume = 0-100 },
-        -- BufRead = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/confirmation_001.ogg", volume = 100 },
-        -- CursorMovedI = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/click.ogg", volume = 100 },
-        -- InsertLeave = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/toggle_001.ogg", volume = 100 },
-        ExitPre = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/bong_001.ogg", volume = 100 },
-        BufWrite = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/confirmation_001.ogg", volume = 100 },
-      },
-    },
-  },
+  -- {
+  -- "whleucka/reverb.nvim",
+  -- event = "BufReadPre",
+  --   opts = {
+  --     sounds = {
+  --       -- add custom sound paths for other events here
+  --       -- eg. EVENT = "/some/path/to/sound.mp3"
+  --       -- BufRead = { path = sound_dir .. "start.ogg", volume = 0-100 },
+  --       -- CursorMovedI = { path = sound_dir .. "click.ogg", volume = 0-100 },
+  --       -- InsertLeave = { path = sound_dir .. "toggle.ogg", volume = 0-100 },
+  --       -- ExitPre = { path = sound_dir .. "exit.ogg", volume = 0-100 },
+  --       -- BufWrite = { path = sound_dir .. "save.ogg", volume = 0-100 },
+  --       -- BufRead = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/confirmation_001.ogg", volume = 100 },
+  --       -- CursorMovedI = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/click.ogg", volume = 100 },
+  --       -- InsertLeave = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/toggle_001.ogg", volume = 100 },
+  --       ExitPre = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/bong_001.ogg", volume = 100 },
+  --       BufWrite = { path = "/home/ard/Downloads/kenney_interface-sounds/Audio/confirmation_001.ogg", volume = 100 },
+  --     },
+  --   },
+  -- },
   {
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
@@ -231,62 +239,37 @@ marksman = {},
     }
   },
   -- {
-  --   "williamboman/mason.nvim",
-  --   opts = {
-  --     ensure_installed = {
-  --       "markdown_inline", -- important
-  --       "bash-language-server",
-  --       "dart-debug-adapter",
-  --       "rust-analyzer",
-  --       -- "esbonio",
-  --       "clangd",
-  --       "clang-format",
-  --       "java-debug-adapter",
-  --       "java-test",
-  --       "sqlfluff",
-  --       -- "r-languageserver",
-  --       "basedpyright",
-  --       "pyright",
-  --       "mypy",
-  --       "debugpy",
-  --       "sqls",
-  --       "typescript-language-server",
-  --       "js-debug-adapter",
-  --       "codelldb",
-  --       "lua-language-server",
-  --       -- svelte
-  --       "svelte-language-server",
-  --       "cmakelang",
-  --       "cmakelint",
-  --       "hadolint", -- Dockerfile linter
-  --       "markdownlint-cli2",
-  --       "markdown-toc",
-  --     },
-  --   },
-  -- },
-  -- {
-  --   "github/copilot.vim",
+  --   "supermaven-inc/supermaven-nvim",
+  --   config = function()
+  --     require("supermaven-nvim").setup({
+  --       keymaps = {
+  --         accept_suggestion = "<C-]>",
+  --         clear_suggestion = "<C-0>",
+  --         accept_word = "<C-j>",
+  --       },
+  --     })
+  --   end,
   --   lazy = false,
-  --   config = function()  -- Mapping tab is already used by NvChad
-  --     -- vim.g.copilot_no_tab_map = true;
-  --     vim.g.copilot_assume_mapped = true;
-  --     vim.g.copilot_tab_fallback = "";
-  --   -- The mapping is set to other key, see custom/lua/mappings
-  --   -- or run <leader>ch to see copilot mapping section
-  --   end
   -- },
   {
-    "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({
-        keymaps = {
-          accept_suggestion = "<C-]>",
-          clear_suggestion = "<C-0>",
-          accept_word = "<C-j>",
+    'huggingface/llm.nvim',
+    opts = {
+      -- cf Setup
+      {
+        model = "qwen2.5-coder:1.5b-base",
+        url = "172.30.3.70:11434", -- llm-ls uses "/api/generate"
+        -- cf https://github.com/ollama/ollama/blob/main/docs/api.md#parameters
+        request_body = {
+          -- Modelfile options for the model you use
+          options = {
+            temperature = 0.2,
+            top_p = 0.95,
+          }
         },
-      })
-    end,
-    lazy = false,
+        accept_keymap = "<C-]>",
+        dismiss_keymap = "<C-0>",
+      }
+    }
   },
   {
     "Civitasv/cmake-tools.nvim",
@@ -591,4 +574,91 @@ marksman = {},
       },
     },
   },
+  {
+    "scalameta/nvim-metals",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    ft = { "scala", "sbt", "java" },
+    opts = function()
+      local metals_config = require("metals").bare_config()
+      metals_config.on_attach = function(client, bufnr)
+        -- your on_attach function
+      end
+
+      return metals_config
+    end,
+    config = function(self, metals_config)
+      local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = self.ft,
+        callback = function()
+          require("metals").initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+      })
+    end
+  },
+  {
+    "yetone/avante.nvim",
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = vim.fn.has("win32") ~= 0
+        and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
+        or "make",
+    event = "VeryLazy",
+    version = false, -- Never set this value to "*"! Never!
+    ---@module 'avante'
+    ---@type avante.Config
+    opts = {
+      -- add any opts here
+      -- for example
+      provider = "ollama",
+      providers = {
+        ollama = {
+          endpoint = "172.30.3.70:11434",
+          model = "qwen2.5-coder:1.5b-base"
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "echasnovski/mini.pick", -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+      "stevearc/dressing.nvim", -- for input provider dressing
+      "folke/snacks.nvim", -- for input provider snacks
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  }
+
 }

@@ -110,6 +110,7 @@ alias sudo="sudo "
 alias zy="sudo zypper"
 # alias python="python3"
 alias nano="nvim"
+alias v="nvim"
 alias rgf='rg --files | rg'
 export nanobind_DIR=/home/ard/installs/nanobind
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64
@@ -141,8 +142,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export ARCGISHOME=/home/ard/installs/Portal_for_ArcGIS_Linux_113_190316/arcgis/portal
-
 # bun stuff
 export PATH="/home/ard/.bun/bin:$PATH"
 
@@ -150,4 +149,25 @@ export PATH="/home/ard/.bun/bin:$PATH"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 export WINEDEBUG=-all
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ard/installs/google/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ard/installs/google/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ard/installs/google/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ard/installs/google/google-cloud-sdk/completion.zsh.inc'; fi
+
+export SPARK_HOME="/opt/spark/latest"
+# export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
+export JAVA_HOME="/home/ard/.sdkman/candidates/java/current"
+export PATH="$PATH:$JAVA_HOME/bin"
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/home/ard/.local/share/coursier/bin"
+# <<< coursier install directory <<<
+
+export SCALA_HOME="/home/linuxbrew/.linuxbrew/opt/scala/idea"
+
+# alias terraform as tofu
+alias terraform="tofu"
+alias tf="tofu"
 
